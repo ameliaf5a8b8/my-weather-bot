@@ -18,4 +18,4 @@ jobs:
           node-version: "18"
 
       - name: Run script
-        run: node main.js
+        run: node src/main.js
