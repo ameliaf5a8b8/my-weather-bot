@@ -1,21 +1,25 @@
-name: Run main.js hourly
+name: Weather Bot
 
 on:
   schedule:
-    - cron: "0 * * * *"   # runs at minute 0 of every hour
-  workflow_dispatch:       # lets you run manually
+    - cron: "0 * * * *"
+  workflow_dispatch:
 
 jobs:
-  run-script:
+  run:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
 
-      - name: Set up Node
-        uses: actions/setup-node@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Run script
         run: node src/main.js
