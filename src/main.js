@@ -46,8 +46,8 @@ async function main() {
 
     if (homeForecast.includes("showers") || homeForecast.includes("rain")) {
         await sendNotification({
-            title: "Home Weather Alert",
-            body_msg: `Rain expected at home soon. Forecast: ${homeForecast}`
+            title: "Rain soon",
+            body_msg: `Forecast: ${homeForecast}`
         });
     }
    
