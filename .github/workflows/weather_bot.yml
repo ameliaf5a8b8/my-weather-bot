@@ -1,30 +1,21 @@
-name: Weather Bot
+name: Run main.js hourly
 
 on:
-  workflow_dispatch:
-    inputs:
-      wake_at:
-        description: "ISO timestamp for next run"
-        required: true
-        type: string
+  schedule:
+    - cron: "0 * * * *"   # runs at minute 0 of every hour
+  workflow_dispatch:       # lets you run manually
 
 jobs:
-  run:
+  run-script:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "18"
 
-      - run: npm install
-
-      - name: Fetch weather and notify
-        run: node src/weather.js
-
-      - name: Schedule next wake-up
-        env:
-          SERVER_URL: ${{ secrets.SCHEDULER_URL }}
-        run: node src/trigger.js "${{ github.event.inputs.wake_at }}"
+      - name: Run script
+        run: node main.js
