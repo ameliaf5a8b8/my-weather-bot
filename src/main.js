@@ -41,15 +41,15 @@ async function main() {
         }
     }
 
-    // Forecast for home
-    const homeForecast = String(await get2HourForecast(HOME_LOCATION)).toLowerCase();
+    // // Forecast for home
+    // const homeForecast = String(await get2HourForecast(HOME_LOCATION)).toLowerCase();
 
-    if (homeForecast.includes("showers") || homeForecast.includes("rain")) {
-        await sendNotification({
-            title: "Rain soon",
-            body_msg: `Forecast: ${homeForecast}`
-        });
-    }
+    // if (homeForecast.includes("showers") || homeForecast.includes("rain")) {
+    //     await sendNotification({
+    //         title: "Rain soon",
+    //         body_msg: `Forecast: ${homeForecast}`
+    //     });
+    // }
    
 }
 
