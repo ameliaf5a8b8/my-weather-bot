@@ -76,9 +76,5 @@ async function main() {
     saveState(state);
 
 }
-await sendNotification({
-                title: "Rain soon",
-                body_msg: `Forecast: `,
-                token: process.env.MUM_PUSHBULLET_TOKEN
-            });
+
 await main();
