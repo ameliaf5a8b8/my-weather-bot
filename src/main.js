@@ -16,6 +16,8 @@ async function main() {
 
     const state = loadState();
 
+    
+
     // Forecast for office tomorrow morning at 8:30am
     if (now.getHours() >= 20 && now.getHours() < 21 && dayOfWeek < 5) { 
         const tomorrow = new Date(now);
@@ -46,27 +48,37 @@ async function main() {
     }
 
     // Forecast for home
-    const homeForecast = String(await get2HourForecast(HOME_LOCATION)).toLowerCase();
+    // Send notification from 7 - 11
+    if (now.getHours() >= 7 && now.getHours() < 23){
+        const homeForecast = String(await get2HourForecast(HOME_LOCATION)).toLowerCase();
+        if (homeForecast.includes("rain") || homeForecast.includes("showers") ) {
+            // Reset memory to 0 hours
+            state.hoursSinceRain = 0;
+        } else {
+            // Increment hours since last rain
+            state.hoursSinceRain += 1;
+        }
 
-
-    if (homeForecast.includes("rain") || homeForecast.includes("showers") ) {
-        // Reset memory to 0 hours
-        state.hoursSinceRain = 0;
-    } else {
-        // Increment hours since last rain
-        state.hoursSinceRain += 1;
-    }
-
-    // Only notify if it's raining AND last rain was > 2 hours ago
-    if (homeForecast.includes("showers")  && state.hoursSinceRain > 2) {
-        await sendNotification({
-            title: "Rain soon",
-            body_msg: `Forecast: ${homeForecast}`
-        });
+        // Only notify if it's raining AND last rain was > 2 hours ago
+        if (homeForecast.includes("showers")  && state.hoursSinceRain > 2) {
+            await sendNotification({
+                title: "Rain soon",
+                body_msg: `Forecast: ${homeForecast}`
+            });
+            await sendNotification({
+                title: "Rain soon",
+                body_msg: `Forecast: ${homeForecast}`,
+                token: process.env.MUM_PUSHBULLET_TOKEN
+            });
+        }
     }
 
     saveState(state);
 
 }
-
+await sendNotification({
+                title: "Rain soon",
+                body_msg: `Forecast: `,
+                token: process.env.MUM_PUSHBULLET_TOKEN
+            });
 await main();

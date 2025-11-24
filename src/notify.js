@@ -1,8 +1,8 @@
 import 'dotenv/config';
 
-const token = process.env.PUSHBULLET_TOKEN;
+const BRYAN_TOKEN = process.env.PUSHBULLET_TOKEN;
 
-export async function sendNotification({ title = "Weather alert", body_msg }) {
+export async function sendNotification({ title = "Weather alert", body_msg , token=BRYAN_TOKEN}) {
 
     const body = {
         type: "note",
