@@ -35,6 +35,8 @@ jobs:
           HOME_REGION: ${{ secrets.HOME_REGION }}
           OFFICE_LOCATION: ${{ secrets.OFFICE_LOCATION }}
           OFFICE_REGION: ${{ secrets.OFFICE_REGION }}
+          MUM_PUSHBULLET_TOKEN: ${{secrets.MUM_PUSHBULLET_TOKEN}}
+
         run: node src/main.js
 
       - name: Commit updated state.json
