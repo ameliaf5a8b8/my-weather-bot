@@ -65,7 +65,8 @@ async function main() {
         });
     }
 
-   
+    saveState(state);
+
 }
 
 await main();
