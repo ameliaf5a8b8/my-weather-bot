@@ -27,6 +27,7 @@ async function main() {
         const forecast = String(await getDailyForecast(OFFICE_REGION, tomorrow))
             .toLowerCase();
 
+
         if (forecast.includes("showers") || forecast.includes("rain")) {
             await sendNotification({
                 title: "Office Weather Alert",
@@ -36,7 +37,7 @@ async function main() {
     }
 
     // Forecast for office later today (6:40am - 7:40am)
-    if (now.getHours() === 6 || now.getHours() === 7) {
+    if (now.getHours() == 6 || now.getHours() == 7) {
         const forecast = String(await get2HourForecast(OFFICE_LOCATION)).toLowerCase();
 
         if (forecast.includes("showers") || forecast.includes("rain")) {

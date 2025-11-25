@@ -41,10 +41,10 @@ async function get2HourForecast(location) {
  * @param {Date} targetTime - Date object
  */
 async function getDailyForecast(region, targetTime) {
-  const url = `${BASE_URL}/24-hour-weather-forecast`;
+  const url = `${BASE_URL}/twenty-four-hr-forecast`;
   const data = await fetchWithRetry(url);
 
-  const periods = data.data.items[0].periods;
+  const periods = data.data.records[0].periods;
   for (const period of periods) {
     const start = new Date(period.start);
     const end = new Date(period.end);
