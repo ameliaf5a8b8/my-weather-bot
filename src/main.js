@@ -27,11 +27,11 @@ async function main() {
         tomorrow.setDate(tomorrow.getDate() + 1);
         tomorrow.setHours(8, 30, 0, 0);
 
-        const forecast = String(await getDailyForecast(OFFICE_REGION, tomorrow))
-            .toLowerCase();
+        const forecast = String(await getDailyForecast(OFFICE_REGION, tomorrow));
+        const forecastLower = forecast.toLowerCase()
 
 
-        if (forecast.includes("showers") || forecast.includes("rain")) {
+        if (forecastLower.includes("showers") || forecastLower.includes("rain")) {
             await sendNotification({
                 title: "Office Weather Alert",
                 body_msg: `Rain expected at office tomorrow morning. Forecast: ${forecast}`
@@ -41,9 +41,9 @@ async function main() {
 
     // Forecast for office later today (6:40am - 7:40am)
     if (nowSG.getHours() == 6 || nowSG.getHours() == 7) {
-        const forecast = String(await get2HourForecast(OFFICE_LOCATION)).toLowerCase();
-
-        if (forecast.includes("showers") || forecast.includes("rain")) {
+        const forecast = String(await get2HourForecast(OFFICE_LOCATION));
+        const forecastLower = forecast.toLowerCase()
+        if (forecastLower.includes("showers") || forecastLower.includes("rain")) {
             await sendNotification({
                 title: "Office Weather Alert",
                 body_msg: `Rain expected at office later. Forecast: ${forecast}`
@@ -54,17 +54,14 @@ async function main() {
     // Forecast for home
     // Send notification from 7 - 11
     if (nowSG.getHours() >= 7 && nowSG.getHours() < 23){
-        const homeForecast = String(await get2HourForecast(HOME_LOCATION)).toLowerCase();
-        if (homeForecast.includes("rain") || homeForecast.includes("showers") ) {
-            // Reset memory to 0 hours
-            state.hoursSinceRain = 0;
-        } else {
-            // Increment hours since last rain
-            state.hoursSinceRain += 1;
-        }
-
+        const homeForecast = String(await get2HourForecast(HOME_LOCATION));
+        const homeForecastLower = homeForecast.toLowerCase()
+       
         // Only notify if it's raining AND last rain was > 2 hours ago
-        if (homeForecast.includes("showers")  && state.hoursSinceRain > 2) {
+        if ((homeForecastLower.includes("moderate") || 
+            homeForecastLower.includes("heavy") ||
+            homeForecastLower.includes("thundery")) && state.hoursSinceRain >= 2) {
+
             await sendNotification({
                 title: "Rain soon",
                 body_msg: `Forecast: ${homeForecast}`
@@ -74,6 +71,15 @@ async function main() {
                 body_msg: `Forecast: ${homeForecast}`,
                 token: process.env.MUM_PUSHBULLET_TOKEN
             });
+        }
+
+        // update state
+        if (homeForecastLower.includes("rain") || homeForecastLower.includes("showers") ) {
+            // Reset memory to 0 hours
+            state.hoursSinceRain = 0;
+        } else {
+            // Increment hours since last rain
+            state.hoursSinceRain += 1;
         }
     }
 

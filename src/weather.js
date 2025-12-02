@@ -29,6 +29,7 @@ async function get2HourForecast(location) {
   const forecasts = data.data.items[0].forecasts;
   for (const forecastObj of forecasts) {
     if (forecastObj.area === location) {
+      console.log(`Weather at ${location}: ${forecastObj.forecast}`)
       return forecastObj.forecast;
     }
   }
@@ -50,6 +51,7 @@ async function getDailyForecast(region, targetTime) {
     const end = new Date(period.end);
     if (targetTime >= start && targetTime <= end) {
       if (period.regions[region]) {
+        console.log(`24 Forcast at ${location}: ${period.regions[region].text}`)
         return period.regions[region].text;
       } else {
         throw new Error(`Region ${region} not found in period forecast`);
