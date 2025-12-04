@@ -76,7 +76,9 @@ async function main() {
             console.log(`Not sending nofication. Hours since rain: ${state.hoursSinceRain}`)
 
         // update state
-        if (homeForecastLower.includes("rain") || homeForecastLower.includes("showers") ) {
+        if (homeForecastLower.includes("moderate") || 
+            homeForecastLower.includes("heavy") ||
+            homeForecastLower.includes("thundery")){
             // Reset memory to 0 hours
             state.hoursSinceRain = 0;
         } else {
